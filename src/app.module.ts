@@ -19,7 +19,7 @@ import { CommentModule } from './comment/comment.module';
       password: '123',
       database: 'tj',
       entities: [UserEntity, PostEntity, CommentEntity],
-      synchronize: false, //Setting synchronize: true shouldn't be used in production - otherwise you can lose production data.
+      synchronize: true, //Setting synchronize: true shouldn't be used in production - otherwise you can lose production data.
     }),
     UserModule,
     PostModule,

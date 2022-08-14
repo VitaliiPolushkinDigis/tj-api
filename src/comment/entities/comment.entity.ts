@@ -18,11 +18,11 @@ export class CommentEntity {
   @Column()
   text: string;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: 'userId' })
   user: UserEntity;
 
-  @ManyToOne(() => PostEntity)
+  @ManyToOne(() => PostEntity, { nullable: false })
   @JoinColumn({ name: 'postId' })
   post: PostEntity;
 
