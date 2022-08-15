@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UserService {
@@ -12,8 +13,6 @@ export class UserService {
     private repository: Repository<UserEntity>,
   ) {}
   create(dto: CreateUserDto) {
-    console.log('dto', dto);
-
     return this.repository.save(dto);
   }
 
@@ -22,7 +21,11 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.repository.findOneBy({ id });
+  }
+
+  findByEmail(cond: LoginUserDto) {
+    return this.repository.findOneBy(cond);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
