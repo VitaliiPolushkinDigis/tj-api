@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
 import { LoginUserDto } from './dto/login-user.dto';
+import { SearchUserDto } from './dto/search-user.dto';
 
 @Injectable()
 export class UserService {
@@ -27,9 +28,34 @@ export class UserService {
   findByEmail(cond: LoginUserDto) {
     return this.repository.findOneBy(cond);
   }
-
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.repository.update(id, updateUserDto);
+  }
+
+  async search(searchUserDto: SearchUserDto) {
+    const qb = this.repository.createQueryBuilder('u');
+    qb.limit(searchUserDto.limit || 10);
+    qb.take(searchUserDto.take || 10);
+    if (searchUserDto.views) {
+      qb.orderBy('views', searchUserDto.views);
+    }
+
+    if (searchUserDto.fullName) {
+      qb.andWhere(`u.fullName ILIKE :fullName`);
+    }
+
+    if (searchUserDto.email) {
+      qb.andWhere(`u.email ILIKE :email`);
+    }
+
+    qb.setParameters({
+      email: `%${searchUserDto.email}%`,
+      fullName: `%${searchUserDto.fullName}%`,
+    });
+
+    const [posts, total] = await qb.getManyAndCount();
+
+    return { posts, total };
   }
 
   remove(id: number) {
