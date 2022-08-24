@@ -30,9 +30,11 @@ export class AuthService {
 
   async register(createUserDto: CreateUserDto) {
     try {
-      const { password, ...user } = await this.usersService.create(
-        createUserDto,
-      );
+      const { password, ...user } = await this.usersService.create({
+        email: createUserDto.email,
+        fullName: createUserDto.fullName,
+        password: createUserDto.password,
+      });
       return {
         ...user,
         token: this.generateJwtToken(user),

@@ -26,8 +26,16 @@ export class UserController {
   @UseGuards(JwtAuthGuard) //check if authorized
   @Get('me')
   getProfile(@Request() req) {
-    return req.user;
+    return this.userService.findByEmail({ email: req.user.email });
   }
+
+  /*   @UseGuards(JwtAuthGuard) //check if authorized
+  @Get('decoratorme')
+  getProfileCustom(@User('user') user: UserEntity) {
+    console.log('user', user);
+
+    return this.userService.findByEmail({ email: user.email });
+  } */
 
   @UseGuards(JwtAuthGuard)
   @Patch('me')
