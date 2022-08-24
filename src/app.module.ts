@@ -9,6 +9,7 @@ import { PostModule } from './post/post.module';
 import { PostEntity } from './post/entities/post.entity';
 import { CommentModule } from './comment/comment.module';
 import { AuthModule } from './auth/auth.module';
+import { ChatGateway } from './chat.gateway';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ChatGateway],
 })
 export class AppModule {}
